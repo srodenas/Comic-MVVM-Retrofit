@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.srodenas.comic.domain.model.Comic
 import com.example.srodenas.comic.domain.useCase.ViewComicUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -22,13 +23,13 @@ class ComicViewModel : ViewModel(){
 
 
 
-    public fun searchByComic(){
-        viewModelScope.launch {
+    fun searchByComic(){
+        viewModelScope.launch(Dispatchers.IO) {
             progressBarLiveData.postValue(true)
-            delay(500)
+            delay(500)  //simulo un poco de tiempo.
             val nuevoComic = useCase()
             if (nuevoComic != null)
-                comicLiveData.value = nuevoComic!!
+                comicLiveData.postValue(nuevoComic!!)
             progressBarLiveData.postValue(false)
 
 
